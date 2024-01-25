@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function ChatBubble({ img, role, content }) {
   return (
-    <div className='flex flex-row w-full py-4 border-secondary border-b gap-1 mx-2'>
+    <div className='flex flex-row w-full py-4 border-secondary  border-b gap-1 mx-2'>
       <div className="avatar">
         <div className="w-12 h-12 rounded-full">
           <img src={img} alt="Avatar" />
