@@ -11,7 +11,7 @@ export default function ChatBubble({ img, role, content }) {
       </div>
 
       <div className='flex flex-col gap-2 px-4 justify-start '>
-        <h2 className='font-semibold text-white'>{role}</h2>
+        <h2 className='font-semibold text-white'>{role === "system" ? "Chatbot" : "User"}</h2>
         <p className='text-base'>{content}</p>
       </div>
     </div>
