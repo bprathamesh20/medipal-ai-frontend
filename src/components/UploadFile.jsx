@@ -47,7 +47,7 @@ const FileUpload = ({  onDataUpload }) => {
   
         const { message } = await responseProcess.json();
         console.log('Server response:', message);
-        onDataUpload(message)
+        onDataUpload(message, extractedData)
   
         // Perform additional actions if needed
   
