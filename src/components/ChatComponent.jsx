@@ -3,6 +3,7 @@ import ChatBubble from './ChatBubble';
 import SendIcon from './icons/SendIcon';
 import avatarImg from '../assets/chatbotImg.svg';
 import FileUpload from './UploadFile';
+import TrashIcon from './icons/TrashIcon';
 
 
 const LOCAL_STORAGE_KEY = 'chatMessages';
@@ -26,6 +27,13 @@ export default function ChatComponent() {
     // Save messages to local storage whenever the messages state changes
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
   }, [messages]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevents the default behavior of the Enter key (e.g., submitting a form)
+      sendMessage();
+    }
+  };
 
 
 
@@ -87,7 +95,7 @@ export default function ChatComponent() {
 
   return (
     <div className='flex flex-col h-full w-full sm:w-1/2  overflow-y-hidden'>
-      <div className='flex-grow overflow-y-auto '>
+      <div className='flex-grow overflow-y-auto overflow-x-hidden'>
         {/* Display chat messages */}
         {messages.map((message, index) => (
           <ChatBubble key={index} role={message.role} content={message.content} />
@@ -97,7 +105,7 @@ export default function ChatComponent() {
 
       <FileUpload onDataUpload={handleDataUpload} />
       <div className='flex flex-row gap-2 justify-between items-end p-7 w-full'>
-      <button type="submit" className="btn" onClick={clearChat}>Clear Chat</button>
+      <button type="submit" className="btn btn-square btn-secondary" onClick={clearChat}><TrashIcon/></button>
 
         {/* Input field for user message */}
         <input
@@ -106,6 +114,7 @@ export default function ChatComponent() {
           className='input input-bordered w-full'
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         
         {/* Button to send message */}
