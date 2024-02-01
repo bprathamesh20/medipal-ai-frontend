@@ -18,7 +18,7 @@ const FileUpload = ({  onDataUpload }) => {
   
       try {
         // First fetch for file upload
-        const responseUpload = await fetch('http://143.244.136.200:3000/multipart-parse', {
+        const responseUpload = await fetch('https://medipal-backend.onrender.com/multipart-parse', {
           method: 'POST',
           body: formData,
         });
@@ -33,7 +33,7 @@ const FileUpload = ({  onDataUpload }) => {
         setispdf(true)
 
         // Second fetch for processing data
-        const responseProcess = await fetch('http://143.244.136.200:3000/process-data', {
+        const responseProcess = await fetch('https://medipal-backend.onrender.com/process-data', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
