@@ -49,7 +49,7 @@ export default function ChatComponent() {
     let updatedMessages = messages.slice(1)
 
     try {
-      const response = await fetch('http://localhost:3000/get-response', {
+      const response = await fetch('http://143.244.136.200:3000/get-response', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
