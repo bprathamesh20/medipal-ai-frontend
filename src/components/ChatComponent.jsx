@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChatBubble from './ChatBubble';
 import SendIcon from './icons/SendIcon';
 import avatarImg from '../assets/chatbotImg.svg';
@@ -21,6 +21,7 @@ export default function ChatComponent() {
 
   const [userInput, setUserInput] = useState('');
   const [pdfData, setpdfData] = useState('');
+  const [waiting, setWait] = useState(false);
 
 
   useEffect(() => {
@@ -79,10 +80,10 @@ export default function ChatComponent() {
       // Add the user's message to the messages state
       setMessages([...messages, { role: 'user', content: userInput.trim() }]);
       setUserInput('');
-
+      setWait(true);
       // Assuming sendDataToServer returns the new message
       const newMessage = await sendDataToServer();
-
+      setWait(false);
       // Append the new message to the existing messages
       setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: newMessage }]);
     }
@@ -90,7 +91,7 @@ export default function ChatComponent() {
   };
 
   const clearChat = () => {
-    setMessages([ { role: 'user', content: 'Please upload the report pdf to start the conversation 🤖' }]);
+    setMessages([{ role: 'user', content: 'Please upload the report pdf to start the conversation 🤖' }]);
   };
 
   return (
@@ -105,23 +106,28 @@ export default function ChatComponent() {
 
       <FileUpload onDataUpload={handleDataUpload} />
       <div className='flex flex-row gap-2 justify-between items-end p-7 w-full'>
-      <button type="submit" className="btn btn-square btn-secondary" onClick={clearChat}><TrashIcon/></button>
+        <button type="submit" className="btn btn-square btn-secondary" onClick={clearChat}><TrashIcon /></button>
 
         {/* Input field for user message */}
         <input
           type='text'
-          placeholder='Message chatbot'
+          placeholder={waiting ? 'Please Wait' : 'Message chatbot'}
           className='input input-bordered w-full'
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-        
+
         {/* Button to send message */}
-        <button className='btn btn-square btn-secondary' onClick={sendMessage}>
-          <SendIcon />
-        </button>
-        
+        <span>
+          {
+            waiting ? <span className="loading loading-spinner loading-lg"></span>:
+              <button className='btn btn-square btn-secondary' onClick={sendMessage}>
+                <SendIcon />
+              </button>
+          }
+        </span>
+
       </div>
     </div>
   );
