@@ -1,5 +1,6 @@
 import { SignInButton } from '@clerk/clerk-react'
 import React from 'react'
+import heroImg from '../assets/hero-img.png'
 
 export default function LandingPage() {
   return (
@@ -11,12 +12,12 @@ export default function LandingPage() {
         </a>
         <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Unlocking the Power of Medical Insights</h1>
         <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Upload your medical reports, receive instant analysis, and empower yourself with personalized insights for a healthier tomorrow.</p>
-        <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+        <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4 place-items-center">
             <SignInButton className="btn btn-primary btn-wide"/>
             
         </div>
-        <div>
-            <img src="" alt="" />
+        <div className='p-3 flex flex-col justify-center w-full items-center shadow-md'>
+            <img src={heroImg} alt="hero-image" className='sm:w-3/4  w-full' />
 
         </div>
        

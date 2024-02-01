@@ -18,7 +18,7 @@ export default function NavBar() {
     </div>
   </div>
   <div className="navbar-center">
-    <a className="btn btn-ghost text-xl">medipal.ai</a>
+    <a className="btn btn-ghost text-xl" onClick={() => navigate('/')}>medipal.ai</a>
   </div>
   <div className="navbar-end">
   <SignOutButton afterSignOutUrl="/" className="btn btn-secondary btn-sm" />

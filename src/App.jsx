@@ -17,6 +17,10 @@ const router = createHashRouter([
     path: "/",
     element: <ChatPage/>,
   },
+  {
+    path:"*",
+    element:<ChatPage/>,
+    },
 ]);
 
 

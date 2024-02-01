@@ -24,9 +24,8 @@ export default function ChatBubble({ role, content }) {
   );
 }
 
-// Define prop types for better development experience
+
 ChatBubble.propTypes = {
-  img: PropTypes.string.isRequired, // Path to the avatar image
   role: PropTypes.string.isRequired, // Role of the chat participant (e.g., "Chat Bot" or "User")
   content: PropTypes.string.isRequired, // Content of the chat message
 };
