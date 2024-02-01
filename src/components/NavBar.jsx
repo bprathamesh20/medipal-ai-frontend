@@ -1,4 +1,6 @@
+import { SignOutButton } from '@clerk/clerk-react'
 import React from 'react'
+
 
 export default function NavBar() {
   return (
@@ -19,7 +21,7 @@ export default function NavBar() {
     <a className="btn btn-ghost text-xl">medipal.ai</a>
   </div>
   <div className="navbar-end">
-   {/* ending content */}
+  <SignOutButton afterSignOutUrl="/" className="btn btn-secondary btn-sm" />
   </div>
 </div>
 
