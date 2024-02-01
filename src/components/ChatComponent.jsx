@@ -21,7 +21,6 @@ export default function ChatComponent() {
 
   const [userInput, setUserInput] = useState('');
   const [pdfData, setpdfData] = useState('');
-  const [waiting, setwait] = useState(false);
 
 
   useEffect(() => {
@@ -65,8 +64,7 @@ export default function ChatComponent() {
       const data = await response.json();
 
       console.log('Server response:', data.message);
-      
-      return data.message;
+      return data.message
     } catch (error) {
       console.error('Error sending data to server:', error.message);
     }
@@ -81,11 +79,10 @@ export default function ChatComponent() {
       // Add the user's message to the messages state
       setMessages([...messages, { role: 'user', content: userInput.trim() }]);
       setUserInput('');
-      setwait(true);
+
       // Assuming sendDataToServer returns the new message
       const newMessage = await sendDataToServer();
 
-      setwait(false);
       // Append the new message to the existing messages
       setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: newMessage }]);
     }
@@ -113,7 +110,7 @@ export default function ChatComponent() {
         {/* Input field for user message */}
         <input
           type='text'
-          placeholder= { waiting ? 'Please Wait' :' Message chatbot '}
+          placeholder='Message chatbot'
           className='input input-bordered w-full'
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
@@ -121,12 +118,9 @@ export default function ChatComponent() {
         />
         
         {/* Button to send message */}
-        <span>
-        { waiting ? <span className="loading loading-spinner loading-lg"></span> : <button className='btn btn-square btn-secondary' onClick={sendMessage}>
+        <button className='btn btn-square btn-secondary' onClick={sendMessage}>
           <SendIcon />
-        </button>}
-        </span>
-        
+        </button>
         
       </div>
     </div>
