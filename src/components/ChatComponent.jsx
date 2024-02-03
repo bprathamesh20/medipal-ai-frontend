@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ChatBubble from './ChatBubble';
 import SendIcon from './icons/SendIcon';
 import avatarImg from '../assets/chatbotImg.svg';
@@ -22,6 +22,14 @@ export default function ChatComponent() {
   const [userInput, setUserInput] = useState('');
   const [pdfData, setpdfData] = useState('');
   const [waiting, setWait] = useState(false);
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      // Scroll to the bottom of the chat container
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
 
   useEffect(() => {
@@ -96,7 +104,7 @@ export default function ChatComponent() {
 
   return (
     <div className='flex flex-col h-full w-full sm:w-1/2  overflow-y-hidden'>
-      <div className='flex-grow overflow-y-auto overflow-x-hidden'>
+      <div className='flex-grow overflow-y-auto overflow-x-hidden' ref={chatContainerRef}>
         {/* Display chat messages */}
         {messages.map((message, index) => (
           <ChatBubble key={index} role={message.role} content={message.content} />
