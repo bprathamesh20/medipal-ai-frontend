@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ChatBubble from './ChatBubble';
 import SendIcon from './icons/SendIcon';
-import avatarImg from '../assets/chatbotImg.svg';
 import FileUpload from './UploadFile';
 import TrashIcon from './icons/TrashIcon';
 
@@ -23,6 +22,7 @@ export default function ChatComponent() {
   const [pdfData, setpdfData] = useState('');
   const [waiting, setWait] = useState(false);
   const chatContainerRef = useRef(null);
+  const abortControllerRef = useRef(new AbortController());
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -38,7 +38,7 @@ export default function ChatComponent() {
   }, [messages]);
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !waiting) {
       e.preventDefault(); // Prevents the default behavior of the Enter key (e.g., submitting a form)
       sendMessage();
     }
@@ -64,6 +64,7 @@ export default function ChatComponent() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ updatedMessages, pdfData }),
+        signal: abortControllerRef.current.signal,
       });
 
       if (!response.ok) {
@@ -75,8 +76,12 @@ export default function ChatComponent() {
       console.log('Server response:', data.message);
       return data.message
     } catch (error) {
-      console.error('Error sending data to server:', error.message);
-    }
+      if (error.name === 'AbortError') {
+        console.log('Request aborted:', error.message);
+      } else {
+        console.error('Error sending data to server:', error.message);
+      }
+        }
   };
 
   // Call the function to send data to the server
@@ -89,6 +94,10 @@ export default function ChatComponent() {
       setMessages([...messages, { role: 'user', content: userInput.trim() }]);
       setUserInput('');
       setWait(true);
+
+      // cancel ongoing requests
+      abortControllerRef.current.abort();
+      abortControllerRef.current = new AbortController();
       // Assuming sendDataToServer returns the new message
       const newMessage = await sendDataToServer();
       setWait(false);
@@ -99,6 +108,10 @@ export default function ChatComponent() {
   };
 
   const clearChat = () => {
+    // Cancel any ongoing requests when clearing the chat
+    abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
+    
     setMessages([{ role: 'user', content: 'Please upload the report pdf to start the conversation 🤖' }]);
   };
 
@@ -117,6 +130,7 @@ export default function ChatComponent() {
         <button type="submit" className="btn btn-square btn-secondary" onClick={clearChat}><TrashIcon /></button>
 
         {/* Input field for user message */}
+        
         <input
           type='text'
           placeholder={waiting ? 'Please Wait' : 'Message chatbot'}
@@ -140,4 +154,3 @@ export default function ChatComponent() {
     </div>
   );
 }
-
