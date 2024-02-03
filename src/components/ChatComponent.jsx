@@ -23,6 +23,7 @@ export default function ChatComponent() {
   const [pdfData, setpdfData] = useState('');
   const [waiting, setWait] = useState(false);
   const chatContainerRef = useRef(null);
+  const abortControllerRef = useRef(new AbortController());
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -36,6 +37,15 @@ export default function ChatComponent() {
     // Save messages to local storage whenever the messages state changes
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
   }, [messages]);
+
+  const clearChat = () => {
+    // Cancel any ongoing requests when clearing the chat
+    abortControllerRef.current.abort();
+    abortControllerRef.current = new AbortController();
+    setWait(false);
+    setMessages([{ role: 'user', content: 'Please upload the report pdf to start the conversation 🤖' }]);
+  };
+
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -98,9 +108,9 @@ export default function ChatComponent() {
 
   };
 
-  const clearChat = () => {
-    setMessages([{ role: 'user', content: 'Please upload the report pdf to start the conversation 🤖' }]);
-  };
+  // const clearChat = () => {
+  //   setMessages([{ role: 'user', content: 'Please upload the report pdf to start the conversation 🤖' }]);
+  // };
 
   return (
     <div className='flex flex-col h-full w-full sm:w-1/2  overflow-y-hidden'>
