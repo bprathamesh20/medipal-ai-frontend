@@ -18,7 +18,7 @@
   - NodeJS
   - ExpressJS
   - pdf-parse
-  - OpenAI GPT-3 FineTuned
+  - OpenAI GPT-3 FineTuned on [Hugging face Medmcqa](https://huggingface.co/datasets/medmcqa)
 
 - **Data Storage:**
   - LocalStorage
