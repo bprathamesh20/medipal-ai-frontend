@@ -55,8 +55,8 @@ export default function ChatComponent() {
 
   const sendDataToServer = async () => {
     // Replace this with your actual messages
-    let updatedMessages = messages.slice(1)
-
+    let updatedMessages = messages.slice(1);
+  
     try {
       const response = await fetch('https://medipal-backend.onrender.com/get-response', {
         method: 'POST',
@@ -66,53 +66,64 @@ export default function ChatComponent() {
         body: JSON.stringify({ updatedMessages, pdfData }),
         signal: abortControllerRef.current.signal,
       });
-
+  
       if (!response.ok) {
         throw new Error(`Request failed with status: ${response.status}`);
       }
-
+  
       const data = await response.json();
-
+  
       console.log('Server response:', data.message);
-      return data.message
+      return data.message;
     } catch (error) {
       if (error.name === 'AbortError') {
         console.log('Request aborted:', error.message);
       } else {
         console.error('Error sending data to server:', error.message);
       }
-        }
+    }
   };
-
-  // Call the function to send data to the server
-
-
+  
   // Function to handle sending a message
   const sendMessage = async () => {
     if (userInput.trim() !== '') {
-      // Add the user's message to the messages state
       setMessages([...messages, { role: 'user', content: userInput.trim() }]);
       setUserInput('');
       setWait(true);
-
-      // cancel ongoing requests
-      abortControllerRef.current.abort();
-      abortControllerRef.current = new AbortController();
-      // Assuming sendDataToServer returns the new message
-      const newMessage = await sendDataToServer();
-      setWait(false);
-      // Append the new message to the existing messages
-      setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: newMessage }]);
     }
-
   };
-
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      if (waiting) {
+        // cancel ongoing requests
+        abortControllerRef.current.abort();
+        abortControllerRef.current = new AbortController();
+  
+        try {
+          // Assuming sendDataToServer returns the new message
+          const newMessage = await sendDataToServer();
+          // Append the new message to the existing messages
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { role: 'assistant', content: newMessage },
+          ]);
+        } finally {
+          setWait(false);
+        }
+      }
+    };
+  
+    fetchData(); // Call the fetchData function when waiting changes
+  }, [waiting]);
+  
   const clearChat = () => {
     // Cancel any ongoing requests when clearing the chat
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
     
     setMessages([{ role: 'user', content: 'Please upload the report pdf to start the conversation 🤖' }]);
+    window.location.reload();
   };
 
   return (
