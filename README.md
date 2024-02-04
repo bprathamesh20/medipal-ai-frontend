@@ -4,6 +4,8 @@
 <img width="500" alt="Screenshot 2024-02-01 at 6 31 36 PM" src="https://github.com/bprathamesh20/medipal-ai-frontend/assets/98270118/330293ae-859f-44b4-aa06-7f8ff008ca13">
 <img width="500" alt="Screenshot 2024-02-02 at 8 49 01 PM" src="https://github.com/bprathamesh20/medipal-ai-frontend/assets/98270118/d5b297cd-b4ea-43dd-a491-4acef24351f8">
 
+[Live Demo](https://medipal-ai-frontend.vercel.app/)
+
 
 ## Tech Stack
 
